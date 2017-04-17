@@ -1,0 +1,27 @@
+sudo: required
+
+services:
+  - docker
+
+env:
+  global:
+    - COMMIT=${TRAVIS_COMMIT::8}
+    # DOCKER_USER
+    # DOCKER_PASSWORD
+
+script:
+  - docker build -t oanhnn/php7.0-cli:$COMMIT      php7.0-cli
+  - docker build -t oanhnn/php7.0-composer:$COMMIT php7.0-composer
+  - docker build -t oanhnn/php7.0-fpm:$COMMIT      php7.0-fpm
+  - docker build -t oanhnn/php7.0-xdebug:$COMMIT   php7.0-xdebug
+
+  - docker run -d --name php70-cli      oanhnn/php7.0-cli:$COMMIT
+  - docker run -d --name php70-composer oanhnn/php7.0-composer:$COMMIT
+  - docker run -d --name php70-fpm      oanhnn/php7.0-fpm:$COMMIT
+  - docker run -d --name php70-xdebug   oanhnn/php7.0-xdebug:$COMMIT
+  # Your test scripts
+  - docker ps
+  - ./docker-check.sh php70-cli
+  - ./docker-check.sh php70-composer
+  - ./docker-check.sh php70-fpm
+  - ./docker-check.sh php70-xdebug
