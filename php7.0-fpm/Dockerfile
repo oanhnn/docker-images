@@ -23,12 +23,12 @@ RUN apk update \
  && docker-php-ext-install mcrypt pdo_mysql intl opcache zip gd \
 
  && runDeps="$( \
-   scanelf --needed --nobanner --recursive /usr/local \
-     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
-     | sort -u \
-     | xargs -r apk info --installed \
-     | sort -u \
-   )" \
+    scanelf --needed --nobanner --recursive /usr/local \
+      | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+      | sort -u \
+      | xargs -r apk info --installed \
+      | sort -u \
+    )" \
  && apk add --no-cache --virtual .php-rundeps $runDeps \
 
  && apk del .build-deps \
