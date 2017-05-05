@@ -10,18 +10,19 @@ env:
     # DOCKER_PASSWORD
 
 script:
-  - docker build -t oanhnn/php7.0-cli:$COMMIT      php7.0-cli
-  - docker build -t oanhnn/php7.0-composer:$COMMIT php7.0-composer
-  - docker build -t oanhnn/php7.0-fpm:$COMMIT      php7.0-fpm
-  - docker build -t oanhnn/php7.0-xdebug:$COMMIT   php7.0-xdebug
-
-  - docker run -d --name php70-cli      oanhnn/php7.0-cli:$COMMIT
-  - docker run -d --name php70-composer oanhnn/php7.0-composer:$COMMIT
-  - docker run -d --name php70-fpm      oanhnn/php7.0-fpm:$COMMIT
-  - docker run -d --name php70-xdebug   oanhnn/php7.0-xdebug:$COMMIT
-  # Your test scripts
+  # build
+  - docker build -t oanhnn/php-cli:7.0-$COMMIT        php-cli/7.0
+  - docker build -t oanhnn/php-cli:7.0-xdebug-$COMMIT php-cli/7.0-xdebug
+  - docker build -t oanhnn/php-fpm:7.0-$COMMIT        php-fpm/7.0
+  - docker build -t oanhnn/php-fpm:7.0-xdebug-$COMMIT php-fpm/7.0-xdebug
+  - docker build -t oanhnn/composer:$COMMIT           composer
+  # run
+  - docker run -d --name php-fpm-70         oanhnn/php-fpm:7.0-$COMMIT
+  - docker run -d --name php-fpm-70-xdebug  oanhnn/php-fpm:7.0-xdebug-$COMMIT
+  - docker run --rm oanhnn/php-cli:7.0-$COMMIT --version
+  - docker run --rm oanhnn/php-cli:7.0-xdebug-$COMMIT --version
+  - docker run --rm oanhnn/composer:$COMMIT --version
+  # test
   - docker ps
-  - ./docker-check.sh php70-cli
-  - ./docker-check.sh php70-composer
-  - ./docker-check.sh php70-fpm
-  - ./docker-check.sh php70-xdebug
+  - ./docker-check.sh php-fpm-70
+  - ./docker-check.sh php-fpm-70-xdebug
