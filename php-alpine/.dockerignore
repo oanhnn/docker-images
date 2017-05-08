@@ -1,0 +1,10 @@
+Dockerfile
+LICENSE
+Makefile
+README.md
+*.md
+.git
+.gitignore
+.gitattributes
+.travis.yml
+docker-check.sh
