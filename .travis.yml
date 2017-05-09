@@ -22,10 +22,10 @@ env:
     - BUILD_PATH="composer"           BUILD_CHECK=false
 
 before_script:
-  - export DOCKER_REPO=`echo $BUILD_PATH | awk -F/ '{ print "oanhnn/"$1 }'`
+  - export DOCKER_REPO=`echo $BUILD_PATH | awk -F/ '{ print $DOCKER_USER "/" $1 }'`
   - export DOCKER_TAG=`echo $BUILD_PATH | awk -F/ '{ print $2 }'`
-  - export BUILD_TAG=`echo $BUILD_PATH | awk -F/ '{ print $2"-"$COMMIT }'`
-  - export BUILD_CONTAINER=`echo $BUILD_PATH | awk -F/ '{ print $1"-"$2 }'`
+  - export BUILD_TAG=`echo $BUILD_PATH | awk -F/ '{ print $2 "-" $COMMIT }'`
+  - export BUILD_CONTAINER=`echo $BUILD_PATH | awk -F/ '{ print $1 "-" $2 }'`
   - chmod a+x ./docker-check.sh
 
 script:
