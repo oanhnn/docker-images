@@ -24,7 +24,7 @@ env:
 before_script:
   - export DOCKER_REPO=`echo $BUILD_PATH | awk -F/ '{ print $1 }'`
   - export DOCKER_TAG=`echo $BUILD_PATH | awk -F/ '{ print $2 }'`
-  - export BUILD_TAG=$DOCKER_TAG-$COMMIT
+  - export BUILD_TAG=${DOCKER_TAG:=latest}-$COMMIT
   - export BUILD_CONTAINER=$DOCKER_REPO-$DOCKER_TAG
   - export DOCKER_REPO=$DOCKER_USER/$DOCKER_REPO
   - chmod a+x ./docker-check.sh
@@ -47,8 +47,4 @@ after_success:
   - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
     docker tag $DOCKER_REPO:$BUILD_TAG $DOCKER_REPO:$DOCKER_TAG;
     docker push $DOCKER_REPO:$DOCKER_TAG;
-    fi
-  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "develop" ]]; then
-    docker tag $DOCKER_REPO:$BUILD_TAG $DOCKER_REPO:$DOCKER_TAG-develop;
-    docker push $DOCKER_REPO:$DOCKER_TAG-develop;
     fi
