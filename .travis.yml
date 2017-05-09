@@ -7,33 +7,47 @@ env:
   global:
     - COMMIT=${TRAVIS_COMMIT::8}
     # DOCKER_USER
+    - secure: "axX4PzKu4RRsg9gIU6WFJtYLCm3Dv6GEABHPpnj5VqkTZ1BmSEO7GS1DZ0ZiddyEZbMQTBTSFxgcZqIMYlf1WMD5mzqa7UCAo0hQ2FfbUjjJOyFhUEe+5l7rjRBn0R/FRTH1Le45tF8rujvKeOiSsiXmxzCtzXK32QlUxuLeo9Zcr6NSXjXaOUdjt1V165l0YBlnaKg2uxPxeBVn+k557VhdCzK5QdsfbDrWjhzAZrTWvwZ2sV416T+7z0ijg9fgItKBRSa4gv0GKyfLo3GqINK9dF6WmI51xDbA7Qiyal0JCeMMx7xEgSeTA2NFimuvqzL+U1/ajCtah+dDwHPY2L0W49BHSgBWP5+22EGhAvrnCBXTeusF2SVAmitMdSvaa2BRgwrCi7LnV5BtbZ/CdYwzm7fdb7Magh+p3xm82YAGn9/mriW1NVffVR1q08v30LK8I2T7F8wvVfTNMhqvvJXHOx5vmXBM/ohQ4cxNcyc67wPlp1qFJadqOEcPI8ZaGaT/gj53kQQM8mbbcZa/8b4K9j27eVMgUZhrg0iKG5cCiDZLtuUbbbhHrXb7YpFpEWPrzfBvn8n6xKUoYf0J6bA8O/2++snVXFtlVZNmjL69ZUoG59qXylxIQRTCvC/wfpdTMPYiTMbMiKm1U0AXUg6dpFs13qFk85aXs/N2bv4="
     # DOCKER_PASSWORD
+    - secure: "rV8MxA8tQejM8LIKP83r9lJtdsCl/fWSEB3ewB/hXMWyHjuWWB6RexOSkWQ15rYSFSg29JXyK3ax6fUOBn2J1e60NOv5Os9KREuhwksiGergLL+XqoW0g5C9uhMJi2dNNd4KuohBbDzINWbuhLxTyre8Dmc/aYfGE7D2N0QP2X5M7r5Znd9zeG9fYkBb1WSPRanvmyHD0NdqyCXOf3qy3+ig6TMSbOWJMbYA14zk5QhINKKFov/VzI4dLYalbZxdCzzmlz43xavBAHED/Brmf8L0gqzg3k7IPUfbd4C8Nfsh+G9IVls7g8oYzdzXgaNBsl00LS02jRSFSf9OtfKw7Y8F9HA6WGYxA5P38o6h8cICSwJCxL37CmsUdSbHLlniu80kHvyjk9IsCgXkqZMqtUXTRT6FHxS/meM5qP+YYbv1e6JJ2ND77hzWIWE15zHLTepl7AreAtyBHIXlMmZWbPEoPVAz/ddtMsEZwvdi4Fp14cTgMOA5r7TFc2OBdmbxw2FGwLEebxPxCW1ZSd04M2uQGMkdc2aMsvyR6BMq/H/zXZojA1GYmKmA9Akd6fToewUV5kjH6uYbP3QnYViC3tt9XqeDw0g3PB3XG2qKCYCg1goesl/FSayZvdIwXUvc3BvxtobLgx+odLER8tKsx6ZG81S0hFfXmgV4RjGfKL4="
+  matrix:
+    - BUILD_PATH="php-alpine/7.0"     BUILD_CHECK=true
+    - BUILD_PATH="php-alpine/7.1"     BUILD_CHECK=true
+    - BUILD_PATH="php-fpm/7.0"        BUILD_CHECK=true
+    - BUILD_PATH="php-fpm/7.0-xdebug" BUILD_CHECK=true
+    - BUILD_PATH="php-fpm/7.1"        BUILD_CHECK=true
+    - BUILD_PATH="php-cli/7.0"        BUILD_CHECK=false
+    - BUILD_PATH="php-cli/7.0-xdebug" BUILD_CHECK=false
+    - BUILD_PATH="php-cli/7.1"        BUILD_CHECK=false
+    - BUILD_PATH="composer"           BUILD_CHECK=false
+
+before_script:
+  - export DOCKER_REPO=`echo $BUILD_PATH | awk -F/ '{ print "oanhnn/"$1 }'`
+  - export DOCKER_TAG=`echo $BUILD_PATH | awk -F/ '{ print $2 }'`
+  - export BUILD_TAG=`echo $BUILD_PATH | awk -F/ '{ print $2"-"$COMMIT }'`
+  - export BUILD_CONTAINER=`echo $BUILD_PATH | awk -F/ '{ print $1"-"$2 }'`
+  - chmod a+x ./docker-check.sh
 
 script:
-  # build
-  - docker build -t oanhnn/php-alpine:7.0-$COMMIT     php-alpine/7.0
-  - docker build -t oanhnn/php-alpine:7.1-$COMMIT     php-alpine/7.1
-  - docker build -t oanhnn/php-cli:7.0-$COMMIT        php-cli/7.0
-  - docker build -t oanhnn/php-cli:7.0-xdebug-$COMMIT php-cli/7.0-xdebug
-  - docker build -t oanhnn/php-cli:7.1-$COMMIT        php-cli/7.1
-  - docker build -t oanhnn/php-fpm:7.0-$COMMIT        php-fpm/7.0
-  - docker build -t oanhnn/php-fpm:7.0-xdebug-$COMMIT php-fpm/7.0-xdebug
-  - docker build -t oanhnn/php-fpm:7.1-$COMMIT        php-fpm/7.1
-  - docker build -t oanhnn/composer:$COMMIT           composer
-  # run
-  - docker run -d --name php-alpine-70      oanhnn/php-alpine:7.0-$COMMIT
-  - docker run -d --name php-alpine-71      oanhnn/php-alpine:7.1-$COMMIT
-  - docker run -d --name php-fpm-70         oanhnn/php-fpm:7.0-$COMMIT
-  - docker run -d --name php-fpm-70-xdebug  oanhnn/php-fpm:7.0-xdebug-$COMMIT
-  - docker run -d --name php-fpm-71         oanhnn/php-fpm:7.1-$COMMIT
-  - docker run --rm oanhnn/php-cli:7.0-$COMMIT --version
-  - docker run --rm oanhnn/php-cli:7.0-xdebug-$COMMIT --version
-  - docker run --rm oanhnn/php-cli:7.1-$COMMIT --version
-  - docker run --rm oanhnn/composer:$COMMIT --version
-  # test
-  - docker ps
-  - ./docker-check.sh php-alpine-70
-  - ./docker-check.sh php-alpine-71
-  - ./docker-check.sh php-fpm-70
-  - ./docker-check.sh php-fpm-70-xdebug
-  - ./docker-check.sh php-fpm-71
+  - docker build -t $DOCKER_REPO:$BUILD_TAG $BUILD_PATH
+  - docker run --rm $DOCKER_REPO:$BUILD_TAG --version
+  - if [[ "$BUILD_CHECK" = "true" ]]; then
+    docker run -d --name $BUILD_CONTAINER $DOCKER_REPO:$BUILD_TAG
+    docker ps
+    ./docker-check.sh $BUILD_CONTAINER
+    fi
+
+after_success:
+  - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+  - if [[ ! -z "$TRAVIS_TAG" ]]; then
+    docker tag $DOCKER_REPO:$BUILD_TAG $DOCKER_REPO:$TRAVIS_TAG;
+    docker push $DOCKER_REPO:$TRAVIS_TAG;
+    fi
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "master" ]]; then
+    docker tag $DOCKER_REPO:$BUILD_TAG $DOCKER_REPO:$DOCKER_TAG;
+    docker push $DOCKER_REPO:$DOCKER_TAG;
+    fi
+  - if [[ "$TRAVIS_PULL_REQUEST" == "false" && "$TRAVIS_BRANCH" == "develop" ]]; then
+    docker tag $DOCKER_REPO:$BUILD_TAG $DOCKER_REPO:$DOCKER_TAG-develop;
+    docker push $DOCKER_REPO:$DOCKER_TAG-develop;
+    fi
