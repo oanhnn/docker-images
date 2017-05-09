@@ -11,18 +11,29 @@ env:
 
 script:
   # build
+  - docker build -t oanhnn/php-alpine:7.0-$COMMIT     php-alpine/7.0
+  - docker build -t oanhnn/php-alpine:7.1-$COMMIT     php-alpine/7.1
   - docker build -t oanhnn/php-cli:7.0-$COMMIT        php-cli/7.0
   - docker build -t oanhnn/php-cli:7.0-xdebug-$COMMIT php-cli/7.0-xdebug
+  - docker build -t oanhnn/php-cli:7.1-$COMMIT        php-cli/7.1
   - docker build -t oanhnn/php-fpm:7.0-$COMMIT        php-fpm/7.0
   - docker build -t oanhnn/php-fpm:7.0-xdebug-$COMMIT php-fpm/7.0-xdebug
+  - docker build -t oanhnn/php-fpm:7.1-$COMMIT        php-fpm/7.1
   - docker build -t oanhnn/composer:$COMMIT           composer
   # run
+  - docker run -d --name php-alpine-70      oanhnn/php-alpine:7.0-$COMMIT
+  - docker run -d --name php-alpine-71      oanhnn/php-alpine:7.1-$COMMIT
   - docker run -d --name php-fpm-70         oanhnn/php-fpm:7.0-$COMMIT
   - docker run -d --name php-fpm-70-xdebug  oanhnn/php-fpm:7.0-xdebug-$COMMIT
+  - docker run -d --name php-fpm-71         oanhnn/php-fpm:7.1-$COMMIT
   - docker run --rm oanhnn/php-cli:7.0-$COMMIT --version
   - docker run --rm oanhnn/php-cli:7.0-xdebug-$COMMIT --version
+  - docker run --rm oanhnn/php-cli:7.1-$COMMIT --version
   - docker run --rm oanhnn/composer:$COMMIT --version
   # test
   - docker ps
+  - ./docker-check.sh php-alpine-70
+  - ./docker-check.sh php-alpine-71
   - ./docker-check.sh php-fpm-70
   - ./docker-check.sh php-fpm-70-xdebug
+  - ./docker-check.sh php-fpm-71
