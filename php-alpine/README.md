@@ -62,7 +62,7 @@ Zend OPcache
 
 ```shell
 $ docker pull oanhnn/php-alpine:7.0
-$ docker run -it oanhnn/php-alpine:7.0 php -v
+$ docker run -it --rm oanhnn/php-alpine:7.0 php -v
 PHP 7.0.16 (cli) (built: Feb 18 2017 15:05:55) ( NTS )
 Copyright (c) 1997-2017 The PHP Group
 Zend Engine v3.0.0, Copyright (c) 1998-2017 Zend Technologies
@@ -73,7 +73,11 @@ Zend Engine v3.0.0, Copyright (c) 1998-2017 Zend Technologies
 
 ```shell
 $ docker pull oanhnn/php-alpine:7.1
-$ docker run -it oanhnn/php-alpine:7.1 php -v
+$ docker run -it --rm oanhnn/php-alpine:7.1 php -v
+PHP 7.1.4 (cli) (built: May  1 2017 23:09:19) ( NTS )
+Copyright (c) 1997-2017 The PHP Group
+Zend Engine v3.1.0, Copyright (c) 1998-2017 Zend Technologies
+    with Zend OPcache v7.1.4, Copyright (c) 1999-2017, by Zend Technologies
 ```
 
 ### Environments for rebuild

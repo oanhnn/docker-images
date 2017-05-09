@@ -17,7 +17,8 @@ COPY ./docker-php-entrypoint.sh /usr/bin/docker-php-entrypoint
 
 RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
  && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
- && apk add --update \
+ && apk upgrade -U \
+ && apk add --no-cache \
     ca-certificates \
     php7 \
     php7-bcmath \
