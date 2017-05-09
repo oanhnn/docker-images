@@ -49,10 +49,10 @@ RUN apk add --update \
  && ln -nfs /etc/php7 /etc/php \
 
  && sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php/php-fpm.conf \
- &&	sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = [::]:9000|g" /etc/php/php-fpm.d/www.conf \
- &&	sed -i "s|;*listen\s*=\s*/||g" /etc/php/php-fpm.d/www.conf \
- &&	sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php/php.ini \
- &&	sed -i "s|;*memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|i" /etc/php/php.ini \
+ && sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = [::]:9000|g" /etc/php/php-fpm.d/www.conf \
+ && sed -i "s|;*listen\s*=\s*/||g" /etc/php/php-fpm.d/www.conf \
+ && sed -i "s|;*date.timezone =.*|date.timezone = ${TIMEZONE}|i" /etc/php/php.ini \
+ && sed -i "s|;*memory_limit =.*|memory_limit = ${PHP_MEMORY_LIMIT}|i" /etc/php/php.ini \
  && sed -i "s|;*upload_max_filesize =.*|upload_max_filesize = ${MAX_UPLOAD}|i" /etc/php/php.ini \
  && sed -i "s|;*max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|i" /etc/php/php.ini \
  && sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php/php.ini \
