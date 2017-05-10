@@ -51,6 +51,11 @@ RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositori
  && ln -nfs /usr/sbin/php-fpm7 /usr/sbin/php-fpm \
  && ln -nfs /etc/php7 /etc/php \
 
+ # ensure www-data user exists
+ # 82 is the standard uid/gid for "www-data" in Alpine
+ && addgroup -g 82 -S www-data \
+ && adduser -u 82 -D -S -G www-data www-data \
+
  && sed -i "s|;*daemonize\s*=\s*yes|daemonize = no|g" /etc/php/php-fpm.conf \
  && sed -i "s|;*listen\s*=\s*127.0.0.1:9000|listen = [::]:9000|g" /etc/php/php-fpm.d/www.conf \
  && sed -i "s|;*listen\s*=\s*/||g" /etc/php/php-fpm.d/www.conf \
