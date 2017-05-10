@@ -1,5 +1,3 @@
-#https://github.com/sosedoff/pgweb
-
 FROM alpine:latest
 
 LABEL image="oanhnn/php-alpine" \
