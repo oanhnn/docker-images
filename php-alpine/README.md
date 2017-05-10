@@ -48,6 +48,7 @@ xml
 xmlwriter
 Zend OPcache
 zip
+zlib
 
 [Zend Modules]
 Zend OPcache

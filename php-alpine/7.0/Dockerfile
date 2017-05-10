@@ -42,6 +42,7 @@ RUN apk add --update \
     php7-soap \
     php7-xml \
     php7-zip \
+    php7-zlib \
  && rm -rf /tmp/* /var/cache/apk/* \
 
  && ln -nfs /usr/bin/php7 /usr/bin/php \
