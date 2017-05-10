@@ -11,6 +11,7 @@ RUN apk update \
         libpng-dev \
         libwebp-dev \
         libxpm-dev \
+        make \
         postgresql-dev \
         zlib-dev \
 
