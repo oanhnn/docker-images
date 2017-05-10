@@ -20,6 +20,7 @@ env:
     - BUILD_PATH="php-cli/7.0-xdebug" BUILD_CHECK=false
     - BUILD_PATH="php-cli/7.1"        BUILD_CHECK=false
     - BUILD_PATH="composer"           BUILD_CHECK=false
+    - BUILD_PATH="pgweb"              BUILD_CHECK=true
 
 before_script:
   - export DOCKER_REPO=`echo $BUILD_PATH | awk -F/ '{ print $1 }'`
