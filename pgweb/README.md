@@ -20,7 +20,7 @@ Using with Docker Engine
 
 ```shell
 $ docker run -d -p 5432:5432 --name db -e POSTGRES_PASSWORD=pass -e POSTGRES_USER=user -e POSTGRES_DB=testdb postgres:alpine
-$ docker run -d -p 80:80 --name pgweb -e DATABASE_URL="postgres://user:pass@db:5432/testdb?sslmode=disable" -e AUTH_USER=dev -e AUTH_PASS=1234 oanhnn/pgweb:latest
+$ docker run -d -p 8081:8081 --name pgweb -e DATABASE_URL="postgres://user:pass@db:5432/testdb?sslmode=disable" -e AUTH_USER=dev -e AUTH_PASS=1234 oanhnn/pgweb:latest
 ```
 
 Or using with Docker Compose
@@ -52,7 +52,7 @@ services:
       - external
       - internal
     ports:
-      - "80:80"
+      - "8081:8081"
     restart: always
 
 networks:
@@ -62,7 +62,7 @@ networks:
     driver: bridge
 ```
 
-It should start web server on http://localhost:80
+It should start web server on http://localhost:8081
 
 ## Contributing
 
