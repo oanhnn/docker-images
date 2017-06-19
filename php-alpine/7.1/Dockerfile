@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.6
 
 LABEL image="oanhnn/php-alpine" \
       license="MIT" \
@@ -15,10 +15,7 @@ ENV LANG="en_US.UTF-8" \
 
 COPY ./docker-php-entrypoint.sh /usr/bin/docker-php-entrypoint
 
-RUN echo "http://dl-cdn.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
- && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
- && apk upgrade -U \
- && apk add --no-cache \
+RUN apk add --update \
     ca-certificates \
     php7 \
     php7-bcmath \
