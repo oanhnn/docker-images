@@ -22,11 +22,11 @@ RUN apk add --update \
     php7-dom \
     php7-ctype \
     php7-curl \
-    php7-fileinfo \
+#    php7-fileinfo \
     php7-fpm \
     php7-gd \
     php7-iconv \
-    php7-imagick \
+#    php7-imagick \
     php7-intl \
     php7-json \
     php7-mbstring \
