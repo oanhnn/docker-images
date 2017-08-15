@@ -17,6 +17,7 @@ COPY ./docker-php-entrypoint.sh /usr/bin/docker-php-entrypoint
 
 RUN apk add --update \
     ca-certificates \
+    curl \
     php7 \
     php7-bcmath \
     php7-dom \
@@ -40,6 +41,7 @@ RUN apk add --update \
     php7-pdo_sqlite \
     php7-phar \
     php7-posix \
+    php7-redis \
     php7-session \
     php7-soap \
     php7-xml \
