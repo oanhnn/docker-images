@@ -35,7 +35,7 @@ before_script:
 
 script:
   - docker build -t $DOCKER_REPO:$BUILD_TAG $BUILD_PATH
-  - docker run --rm $DOCKER_REPO:$BUILD_TAG --version
+#  - docker run --rm $DOCKER_REPO:$BUILD_TAG --version
   - if [[ "$BUILD_CHECK" == "true" ]]; then
     docker run -d --name $BUILD_CONTAINER $DOCKER_REPO:$BUILD_TAG;
     docker ps;
