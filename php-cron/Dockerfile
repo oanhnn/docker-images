@@ -80,4 +80,4 @@ WORKDIR /var/www
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/crond", " -f", "-S"]
+CMD ["/usr/sbin/crond", "-f", "-S"]
