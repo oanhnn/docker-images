@@ -1,10 +1,14 @@
 # Some Docker images
 
+[![Build Status](https://travis-ci.org/oanhnn/docker-images.svg?branch=master)](https://travis-ci.org/oanhnn/docker-images)
+
 * [oanhnn/composer](https://github.com/oanhnn/docker-images/blob/master/composer/README.md)
 * [oanhnn/pgweb](https://github.com/oanhnn/docker-images/blob/master/pgweb/README.md)
 * [oanhnn/php-alpine](https://github.com/oanhnn/docker-images/blob/master/php-alpine/README.md)
 * [oanhnn/php-cli](https://github.com/oanhnn/docker-images/blob/master/php-cli/README.md)
 * [oanhnn/php-fpm](https://github.com/oanhnn/docker-images/blob/master/php-fpm/README.md)
+* [oanhnn/php-cron](https://github.com/oanhnn/docker-images/blob/master/php-cron/README.md)
+* [oanhnn/php-supervisord](https://github.com/oanhnn/docker-images/blob/master/php-supervisord/README.md)
 
 ## Requirement
 - Docker Engine 1.12+

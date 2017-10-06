@@ -24,7 +24,7 @@ env:
     - BUILD_PATH="php-cron"           BUILD_CHECK=true
     - BUILD_PATH="php-supervisord"    BUILD_CHECK=true
     - BUILD_PATH="composer"           BUILD_CHECK=false
-    - BUILD_PATH="pgweb"              BUILD_CHECK=true
+    #- BUILD_PATH="pgweb"              BUILD_CHECK=true
 
 before_script:
   - export DOCKER_REPO=`echo $BUILD_PATH | awk -F/ '{ print $1 }'`
