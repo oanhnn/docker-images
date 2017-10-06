@@ -4,7 +4,7 @@ Repository of `oanhnn/composer` Docker image.
 
 ## Features
 
-- [x] Using php:7.0-alpine
+- [x] Using php:7.1-alpine
 - [x] Build with latest stable Composer
 
 ## Requirement
@@ -15,7 +15,7 @@ Repository of `oanhnn/composer` Docker image.
 ```shell
 $ docker pull oanhnn/composer
 $ docker run -it --rm oanhnn/composer --version
-Composer version 1.4.1 2017-03-10 09:29:45
+Composer version 1.5.2 2017-09-11 16:59:25
 ```
 
 ## Contributing

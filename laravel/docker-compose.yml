@@ -1,0 +1,72 @@
+version: "3"
+
+services:
+  db:
+    image: postgres:9.6-alpine
+    environment:
+      POSTGRES_DB:       homestead
+      POSTGRES_USER:     homestead
+      POSTGRES_PASSWORD: secret
+      TERM:              linux
+    networks:
+      - internal
+    restart: always
+
+  dbadmin:
+    image: adminer:fastcgi
+    depends_on:
+      - db
+    networks:
+      - internal
+    restart: always
+
+  redis:
+    image:  redis:3-alpine
+    environment:
+      TERM: linux
+    networks:
+      - internal
+    restart: always
+
+  app:
+    build: ./dockers/app
+    environment:
+      TERM: linux
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - .:/apps/exmaple.com
+      - ./dockers/app/php-fpm.conf:/etc/php/php-fpm.conf:ro
+      - ./storage/logs:/var/log/php7
+      - ./storage/logs:/var/log/supervisord
+    networks:
+      - internal
+    working_dir: /apps/example.com
+    restart: always
+
+  web:
+    image: nginx:stable-alpine
+    environment:
+      TERM: linux
+    depends_on:
+      - app
+      - dbadmin
+    volumes:
+      - .:/apps/example.com
+      - ./dockers/web/site.conf:/etc/nginx/conf.d/site.conf:ro
+      - ./storage/logs:/var/log/nginx
+    networks:
+      - internal
+      - external
+    ports:
+      - "80:80"
+      - "8080:8080"
+    working_dir: /apps/example.com
+    restart: always
+
+networks:
+  external:
+    driver: bridge
+  internal:
+    driver: bridge

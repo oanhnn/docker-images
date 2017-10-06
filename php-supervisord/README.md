@@ -1,27 +1,45 @@
-# oanhnn/php-cron
+# oanhnn/php-supervisord
 
-Repository of `oanhnn/php-cron` Docker image.
+Repository of `oanhnn/php-supervisord` Docker image.
 
 ## Features
 
 - [x] Base from `alpine:3.6` image
 - [x] Install php-fpm 7.1
-- [x] Run crond
+- [x] Install supervisor
+- [x] Use ONBUILD for customizing supervisor programs
 
 ## Requirement
 - Docker Engine 1.12+
 
 ## Usage
 
+Make folder `supervisor.d` and put all your supervisor's program config files to that.
+
 Make `Dockerfile`
 
 ```docker
 # Dockerfile
-FROM oanhnn/php-cron:latest
+FROM oanhnn/php-supervisord:latest
 
-RUN echo ">>> Setting crond for laravel scheduler" \
+RUN echo ">>> Install nodejs, npm, yarn and laravel-echo-server" \
+ && apk add --update \
+    nodejs \
+    nodejs-npm yarn \
+ && apk add --update --no-cache -t .build-deps python make g++ gcc \
+ && yarn global add --prod --no-lockfile laravel-echo-server \
+ && apk del .build-deps \
+ && yarn cache clean \
+ && rm -rf /tmp/* /var/cache/apk/* \
+ && echo ">>> Setting crond for laravel scheduler" \
  && echo -e "*\t*\t*\t*\t*\tphp /path/to/artisan schedule:run > /dev/null 2>&1" | crontab -u www-data -
+
+EXPOSE 9000 9001
 ```
+
+When you build, all your supervisor's program config files in `supervisor.d` will copy to container.
+
+See more in Laravel example
 
 ## Contributing
 

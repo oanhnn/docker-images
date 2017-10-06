@@ -22,6 +22,7 @@ env:
     - BUILD_PATH="php-cli/7.0-xdebug" BUILD_CHECK=false
     - BUILD_PATH="php-cli/7.1"        BUILD_CHECK=false
     - BUILD_PATH="php-cron"           BUILD_CHECK=true
+    - BUILD_PATH="php-supervisord"    BUILD_CHECK=true
     - BUILD_PATH="composer"           BUILD_CHECK=false
     - BUILD_PATH="pgweb"              BUILD_CHECK=true
 

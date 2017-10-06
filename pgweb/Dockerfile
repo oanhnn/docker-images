@@ -1,10 +1,6 @@
 FROM alpine:latest
 
-LABEL image="oanhnn/php-alpine" \
-      license="MIT" \
-      homepage="https://github.com/oanhnn/docker-images"
-
-ENV PGWEB_VERSION=0.9.7 \
+ENV PGWEB_VERSION=0.9.9 \
     DATABASE_URL="postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable" \
     AUTH_USER="" \
     AUTH_PASS=""
@@ -16,7 +12,6 @@ RUN apk add --update ca-certificates wget \
  && unzip /tmp/pgweb_linux_amd64.zip -d /usr/local/bin \
  && mv /usr/local/bin/pgweb_linux_amd64 /usr/local/bin/pgweb \
  && chmod a+x /usr/local/bin/pgweb /usr/local/bin/docker-entrypoint \
- && apk del ca-certificates wget \
  && rm -rf /tmp/* /var/cache/apk/*
 
 EXPOSE 8081

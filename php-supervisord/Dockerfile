@@ -47,6 +47,7 @@ RUN echo ">>> Install dependencies" \
     php7-xml \
     php7-zip \
     php7-zlib \
+    supervisor \
  && rm -rf /tmp/* /var/cache/apk/* \
  && echo ">>> Ensure www-data (ID: 82) user and some directories exists" \
  && addgroup -g 82 -S www-data \
@@ -68,8 +69,14 @@ RUN echo ">>> Install dependencies" \
  && sed -i "s|;*max_file_uploads =.*|max_file_uploads = ${PHP_MAX_FILE_UPLOAD}|i" /etc/php/php.ini \
  && sed -i "s|;*post_max_size =.*|post_max_size = ${PHP_MAX_POST}|i" /etc/php/php.ini \
  && sed -i "s|;*cgi.fix_pathinfo=.*|cgi.fix_pathinfo = 0|i" /etc/php/php.ini \
- && echo ">>> Setting crond" \
- && echo -e "#*\t*\t*\t*\t*\techo \$(whoami)" | crontab -u www-data -
+ && echo ">>> Setting supervisord" \
+ && mkdir -p /etc/supervisor.d /var/log/supervisord \
+ && sed -i "s|;*nodaemon=.*|nodaemon=true|i" /etc/supervisord.conf \
+ && sed -i "s|;*pidfile=.*|pidfile=/run/supervisord.pid|i" /etc/supervisord.conf \
+ && sed -i "s|;*childlogdir=.*|childlogdir=/var/log/supervisord|i" /etc/supervisord.conf
+
+# Copy config files
+ONBUILD COPY ./supervisor.d /etc/supervisor.d
 
 ## Get composer
 ONBUILD RUN curl -s https://getcomposer.org/installer | php \
@@ -80,4 +87,4 @@ WORKDIR /var/www
 
 EXPOSE 9000
 
-CMD ["/usr/sbin/crond", " -f", "-S"]
+CMD ["supervisord", "--configuration", "/etc/supervisord.conf"]

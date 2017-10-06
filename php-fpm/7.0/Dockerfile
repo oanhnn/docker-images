@@ -14,7 +14,6 @@ RUN apk update \
         make \
         postgresql-dev \
         zlib-dev \
-
  && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ \
                                 --with-jpeg-dir=/usr/include/ \
                                 --with-webp-dir=/usr/include/ \
@@ -22,7 +21,6 @@ RUN apk update \
                                 --with-png-dir=/usr/include/ \
                                 --with-zlib-dir=/usr/ \
  && docker-php-ext-install mcrypt pdo_mysql pdo_pgsql intl opcache zip gd \
-
  && runDeps="$( \
     scanelf --needed --nobanner --recursive /usr/local \
       | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
@@ -31,7 +29,6 @@ RUN apk update \
       | sort -u \
     )" \
  && apk add --no-cache --virtual .php-rundeps $runDeps \
-
  && apk del .build-deps \
  && rm -rf /var/cache/apk/* /tmp/*
 
