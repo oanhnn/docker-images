@@ -1,0 +1,147 @@
+version: "3"
+
+services:
+  postgres:
+    image: postgres:9.6-alpine
+    environment:
+      POSTGRES_DB:       homestead
+      POSTGRES_USER:     homestead
+      POSTGRES_PASSWORD: secret
+      TERM:              linux
+    volumes:
+      - database:/var/lib/postgresql/data
+    networks:
+      - internal
+    restart: always
+
+  adminer:
+    image: adminer
+    depends_on:
+      - postgres
+    networks:
+      - internal
+    restart: always
+
+  redis:
+    image:  redis:3-alpine
+    environment:
+      TERM: linux
+    networks:
+      - internal
+    restart: always
+
+  laravel:
+    build: ./build
+    environment:
+      TERM: linux
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - source:/apps/exmaple.com
+      - ./build/php-fpm.conf:/etc/php/php-fpm.conf:ro
+      - ./storage/logs:/var/log/php7
+      - ./storage/logs:/var/log/supervisord
+    networks:
+      - internal
+    working_dir: /apps/example.com
+    restart: always
+
+  laracho:
+    image: oanhnn/laravel-echo-server
+    environment:
+      TERM: linux
+    depends_on:
+      - redis
+    volumes:
+      - source:/apps/example.com
+    networks:
+      - internal
+    working_dir: /apps/example.com
+    restart: always
+
+  influxdb:
+    image: influxdb:alpine
+    environment:
+      TERM: linux
+    volumes:
+      - influxdb:/var/lib/influxdb
+      - ./build/influxdb.conf:/etc/influxdb/influxdb.conf:ro
+    networks:
+      - internal
+    restart: always
+
+  kapacitor:
+    image: kapacitor:alpine
+    environment:
+      TERM: linux
+    depends_on:
+      - influxdb
+    volumes:
+      - kapacitor:/var/lib/kapacitor
+      - ./build/kapacitor.conf:/etc/kapacitor/kapacitor.conf:ro
+    networks:
+      - internal
+    restart: always
+
+  telegraf:
+    image: telegraf:alpine
+    environment:
+      TERM: linux
+    depends_on:
+      - influxdb
+    volumes:
+      - ./build/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - internal
+    restart: always
+
+  chronograf:
+    image: quay.io/influxdb/chronograf:latest
+    environment:
+      TERM: linux
+    depends_on:
+      - influxdb
+      - kapacitor
+      - telegraf
+    volumes:
+      - chronograf:/var/lib/chronograf/
+    networks:
+      - internal
+    restart: always
+
+  nginx:
+    image: nginx:stable-alpine
+    environment:
+      TERM: linux
+    depends_on:
+      - laravel
+      - adminer
+      - chronograf
+    volumes:
+      - ./build/nginx.conf:/etc/nginx/conf.d/site.conf:ro
+      - ./ssl:/etc/nginx/ssl:ro
+      - ./storage/logs:/var/log/nginx
+    networks:
+      - internal
+      - external
+    ports:
+      - "80:80"     # HTTP
+      - "443:443"   # HTTPs
+      - "8080:8080" # Adminer
+      - "8081:8081" # chronograf
+    restart: always
+
+volumes:
+  source:
+  database:
+  influxdb:
+  kapacitor:
+  chronograf:
+
+networks:
+  external:
+    driver: bridge
+  internal:
+    driver: bridge

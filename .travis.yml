@@ -13,18 +13,18 @@ env:
     # DOCKER_PASSWORD
     - secure: "rV8MxA8tQejM8LIKP83r9lJtdsCl/fWSEB3ewB/hXMWyHjuWWB6RexOSkWQ15rYSFSg29JXyK3ax6fUOBn2J1e60NOv5Os9KREuhwksiGergLL+XqoW0g5C9uhMJi2dNNd4KuohBbDzINWbuhLxTyre8Dmc/aYfGE7D2N0QP2X5M7r5Znd9zeG9fYkBb1WSPRanvmyHD0NdqyCXOf3qy3+ig6TMSbOWJMbYA14zk5QhINKKFov/VzI4dLYalbZxdCzzmlz43xavBAHED/Brmf8L0gqzg3k7IPUfbd4C8Nfsh+G9IVls7g8oYzdzXgaNBsl00LS02jRSFSf9OtfKw7Y8F9HA6WGYxA5P38o6h8cICSwJCxL37CmsUdSbHLlniu80kHvyjk9IsCgXkqZMqtUXTRT6FHxS/meM5qP+YYbv1e6JJ2ND77hzWIWE15zHLTepl7AreAtyBHIXlMmZWbPEoPVAz/ddtMsEZwvdi4Fp14cTgMOA5r7TFc2OBdmbxw2FGwLEebxPxCW1ZSd04M2uQGMkdc2aMsvyR6BMq/H/zXZojA1GYmKmA9Akd6fToewUV5kjH6uYbP3QnYViC3tt9XqeDw0g3PB3XG2qKCYCg1goesl/FSayZvdIwXUvc3BvxtobLgx+odLER8tKsx6ZG81S0hFfXmgV4RjGfKL4="
   matrix:
-    - BUILD_PATH="php-alpine/7.0"     BUILD_CHECK=true
-    - BUILD_PATH="php-alpine/7.1"     BUILD_CHECK=true
-    - BUILD_PATH="php-fpm/7.0"        BUILD_CHECK=true
-    - BUILD_PATH="php-fpm/7.0-xdebug" BUILD_CHECK=true
-    - BUILD_PATH="php-fpm/7.1"        BUILD_CHECK=true
-    - BUILD_PATH="php-cli/7.0"        BUILD_CHECK=false
-    - BUILD_PATH="php-cli/7.0-xdebug" BUILD_CHECK=false
-    - BUILD_PATH="php-cli/7.1"        BUILD_CHECK=false
-    - BUILD_PATH="php-cron"           BUILD_CHECK=true
-    - BUILD_PATH="php-supervisord"    BUILD_CHECK=true
-    - BUILD_PATH="composer"           BUILD_CHECK=false
-    #- BUILD_PATH="pgweb"              BUILD_CHECK=true
+    - BUILD_PATH="php-alpine/7.0"      BUILD_CHECK=true
+    - BUILD_PATH="php-alpine/7.1"      BUILD_CHECK=true
+    - BUILD_PATH="php-fpm/7.0"         BUILD_CHECK=true
+    - BUILD_PATH="php-fpm/7.0-xdebug"  BUILD_CHECK=true
+    - BUILD_PATH="php-fpm/7.1"         BUILD_CHECK=true
+    - BUILD_PATH="php-cli/7.0"         BUILD_CHECK=false
+    - BUILD_PATH="php-cli/7.0-xdebug"  BUILD_CHECK=false
+    - BUILD_PATH="php-cli/7.1"         BUILD_CHECK=false
+    - BUILD_PATH="php-cron"            BUILD_CHECK=true
+    - BUILD_PATH="php-supervisord"     BUILD_CHECK=true
+    - BUILD_PATH="composer"            BUILD_CHECK=false
+    - BUILD_PATH="laravel-echo-server" BUILD_CHECK=false
 
 before_script:
   - export DOCKER_REPO=`echo $BUILD_PATH | awk -F/ '{ print $1 }'`
