@@ -24,6 +24,7 @@ env:
     - BUILD_PATH="php-cron"            BUILD_CHECK=true
     - BUILD_PATH="php-supervisord"     BUILD_CHECK=true
     - BUILD_PATH="composer"            BUILD_CHECK=false
+    - BUILD_PATH="deployer"            BUILD_CHECK=false
     - BUILD_PATH="laravel-echo-server" BUILD_CHECK=false
 
 before_script:
